@@ -16,7 +16,6 @@ import com.example.newsapp.databinding.FragmentNewsListBinding
 import com.example.newsapp.feature.newslist.data.remote.RetrofitProvider
 import com.example.newsapp.feature.newslist.data.repository.NewsRepository
 import com.example.newsapp.feature.newslist.domain.NewsViewModel
-import com.example.newsapp.feature.newslist.domain.NewsViewModel.Companion.SOURCE_TECHCRUNCH
 import com.example.newsapp.feature.newslist.domain.NewsViewModelFactory
 import com.example.newsapp.feature.newslist.presentation.adapter.ArticleAdapter
 import kotlinx.coroutines.launch
@@ -51,7 +50,7 @@ class NewsListFragment : Fragment() {
     private fun initViews() {
         setupAdapter()
         subscribeObservers()
-        viewModel.loadNews(SOURCE_TECHCRUNCH)
+        viewModel.loadNews()
     }
 
     private fun subscribeObservers() {
@@ -59,6 +58,7 @@ class NewsListFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.articles.collect { list ->
                     adapter.submitList(list)
+                    viewModel.isGetArticlesAlreadyInProgress = false
                 }
             }
         }
@@ -74,6 +74,12 @@ class NewsListFragment : Fragment() {
         binding.recyclerArticles.setHasFixedSize(true)
         binding.recyclerArticles.adapter = adapter
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadNews()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
