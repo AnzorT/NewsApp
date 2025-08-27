@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.flow
 class NewsRepository(
     private val api: NewsApiService
 ) {
-    fun getTopHeadlines(sourceId: String): Flow<List<ArticleData>> = flow {
-        val response = api.topHeadlinesBySource(country = "us", category = sourceId)
+    fun getTopHeadlines(category: String): Flow<List<ArticleData>> = flow {
+        val response = api.topHeadlinesBySource(country = "us", category = category)
         emit(response.articles)
     }
 }

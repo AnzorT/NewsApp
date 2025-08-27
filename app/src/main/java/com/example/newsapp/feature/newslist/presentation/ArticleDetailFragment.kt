@@ -11,6 +11,7 @@ import coil.load
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentArticleDetailBinding
 import com.example.newsapp.feature.newslist.domain.NewsViewModel
+import com.example.newsapp.feature.newslist.domain.NewsViewModel.Companion.ARTICLE_SUBJECT_ONE_KEY
 
 class ArticleDetailFragment : Fragment() {
     private var _binding: FragmentArticleDetailBinding? = null
@@ -34,7 +35,7 @@ class ArticleDetailFragment : Fragment() {
 
     private fun implementOnclickListeners() {
         binding.btnBack.setOnClickListener {
-            viewModel.loadNews()
+            viewModel.loadNews(ARTICLE_SUBJECT_ONE_KEY)
             findNavController().navigate(R.id.action_articleDetailFragment_to_newsListFragment)
         }
     }

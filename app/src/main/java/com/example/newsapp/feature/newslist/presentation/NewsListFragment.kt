@@ -16,6 +16,7 @@ import com.example.newsapp.databinding.FragmentNewsListBinding
 import com.example.newsapp.feature.newslist.data.remote.RetrofitProvider
 import com.example.newsapp.feature.newslist.data.repository.NewsRepository
 import com.example.newsapp.feature.newslist.domain.NewsViewModel
+import com.example.newsapp.feature.newslist.domain.NewsViewModel.Companion.ARTICLE_SUBJECT_TWO_KEY
 import com.example.newsapp.feature.newslist.domain.NewsViewModelFactory
 import com.example.newsapp.feature.newslist.presentation.adapter.ArticleAdapter
 import kotlinx.coroutines.launch
@@ -50,15 +51,22 @@ class NewsListFragment : Fragment() {
     private fun initViews() {
         setupAdapter()
         subscribeObservers()
-        viewModel.loadNews()
+        viewModel.loadNews(ARTICLE_SUBJECT_TWO_KEY)
     }
 
     private fun subscribeObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.articles.collect { list ->
-                    adapter.submitList(list)
-                    viewModel.isGetArticlesAlreadyInProgress = false
+                launch {
+                    viewModel.articles.collect { list ->
+                        adapter.submitList(list)
+                    }
+                }
+                launch {
+                    viewModel.isLoading.collect { isLoading ->
+                        binding.progressBarLoader.visibility =
+                            if (isLoading) View.VISIBLE else View.GONE
+                    }
                 }
             }
         }
@@ -77,7 +85,8 @@ class NewsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadNews()
+        if(viewModel.isGetArticlesAlreadyInProgress) return
+        viewModel.loadNews(ARTICLE_SUBJECT_TWO_KEY)
     }
 
 

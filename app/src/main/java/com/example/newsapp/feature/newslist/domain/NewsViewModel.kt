@@ -15,20 +15,32 @@ class NewsViewModel(
 
     private val _articles = MutableStateFlow<List<ArticleData>>(emptyList())
     val articles: StateFlow<List<ArticleData>> = _articles
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+
     var isGetArticlesAlreadyInProgress = false
     var selectedArticleData: ArticleData? = null
-    fun loadNews() {
+
+    fun loadNews(subject: String) {
         if (isGetArticlesAlreadyInProgress) return
         isGetArticlesAlreadyInProgress = true
+        _isLoading.value = true
         viewModelScope.launch {
-            repo.getTopHeadlines(SOURCE_TECHCRUNCH).collect { list ->
+            repo.getTopHeadlines(subject).collect { list ->
                 _articles.value = list
             }
+            isGetArticlesAlreadyInProgress = false
+            _isLoading.value = false
+
         }
+
     }
 
     companion object {
-        const val SOURCE_TECHCRUNCH = "business"
+        const val ARTICLE_SUBJECT_ONE_KEY = "business"
+        const val ARTICLE_SUBJECT_TWO_KEY = "technology"
     }
 }
 
