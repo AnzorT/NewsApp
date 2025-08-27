@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.newsapp.BuildConfig
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentNewsListBinding
 import com.example.newsapp.feature.newslist.data.remote.RetrofitProvider
@@ -29,7 +28,7 @@ class NewsListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: NewsViewModel by activityViewModels {
-        val api = RetrofitProvider.createNewsApi(BuildConfig.NEWS_API_KEY)
+        val api = RetrofitProvider.createNewsApi()
         val repo = NewsRepository(api)
         NewsViewModelFactory(repo)
     }

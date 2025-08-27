@@ -7,7 +7,9 @@ import retrofit2.http.Query
 interface NewsApiService {
     @GET("v2/top-headlines")
     suspend fun topHeadlinesBySource(
-        @Query("sources") sourceId: String,
-        @Query("pageSize") pageSize: Int = 20
+        @Query("category") category: String? = "Bitcoin",
+        @Query("country") country: String = "us",
+        @Query("page") page: Int = 1,
+        @Query("pageSize") pageSize: Int = 20,
     ): NewsApiResponse
 }

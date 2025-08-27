@@ -26,7 +26,7 @@ class NewsViewModel(
     }
 
     companion object {
-        const val SOURCE_TECHCRUNCH = "techcrunch"
+        const val SOURCE_TECHCRUNCH = "business"
     }
 }
 

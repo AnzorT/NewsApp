@@ -37,7 +37,6 @@ class ArticleDetailFragment : Fragment() {
             tvDescription.text = viewModel.selectedArticleData?.description ?: ""
             imageViewImage.load(viewModel.selectedArticleData?.urlToImage ?: "") { crossfade(true) }
         }
-        findNavController().navigate(R.id.action_articleDetailFragment_to_newsListFragment)
     }
 
     override fun onDestroyView() {
