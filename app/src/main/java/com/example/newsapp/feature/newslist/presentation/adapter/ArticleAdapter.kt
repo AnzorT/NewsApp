@@ -39,9 +39,6 @@ class ArticleAdapter(
             tvArticleDescription.text  = item.description
             imageViewArticleImage.load(item.urlToImage) {
                 crossfade(true)
-                // optional:
-                // placeholder(R.drawable.ic_placeholder)
-                // error(R.drawable.ic_broken_image)
             }
             root.setOnClickListener { onClick(item) }
         }
